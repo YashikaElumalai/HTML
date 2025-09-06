@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Quiz Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .quiz-container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 id="question">Question text</h2>
+    <div id="answers"></div>
+    <button id="next-btn">Next</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the capital of France?",
+        answers: ["Berlin", "Madrid", "Paris", "Rome"],
+        correct: 2
+      },
+      {
+        question: "Which language is used for web apps?",
+        answers: ["Python", "Java", "JavaScript", "C++"],
+        correct: 2
+      },
+      {
+        question: "Who painted the Mona Lisa?",
+        answers: ["Van Gogh", "Da Vinci", "Picasso", "Rembrandt"],
+        correct: 1
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const nextBtn = document.getElementById("next-btn");
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      questionEl.textContent = q.question;
+      answersEl.innerHTML = "";
+      q.answers.forEach((answer, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = answer;
+        btn.onclick = () => checkAnswer(index);
+        answersEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      if (selected === questions[currentQuestion].correct) {
+        score++;
+        alert("✅ Correct!");
+      } else {
+        alert("❌ Wrong!");
+      }
+    }
+
+    nextBtn.addEventListener("click", () => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        questionEl.textContent = `Game Over! Your score: ${score}/${questions.length}`;
+        answersEl.innerHTML = "";
+        nextBtn.style.display = "none";
+      }
+    });
+
+    loadQuestion();
+  </script>
+</body>
+</html>
